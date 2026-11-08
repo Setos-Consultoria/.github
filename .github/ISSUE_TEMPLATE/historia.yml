@@ -1,0 +1,58 @@
+name: "🔵 História"
+description: História de usuário, uma entrega de valor de negócio (filha de um Épico).
+title: "[História] "
+type: "História"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Escreva pensando em quem vai implementar (pessoa ou IA): **todo o contexto de negócio precisa estar aqui.**
+        Depois de criada, vincule ao Épico (campo *Parent*) e quebre em Tarefas como *sub-issues* se precisar.
+  - type: textarea
+    id: historia
+    attributes:
+      label: História
+      description: Formato "Como [quem], quero [o quê], para [por quê]".
+      value: |
+        **Como**
+        **quero**
+        **para**
+    validations:
+      required: true
+  - type: textarea
+    id: contexto
+    attributes:
+      label: Contexto de negócio
+      description: Por que isso importa, como o cliente trabalha hoje, termos do domínio.
+  - type: textarea
+    id: regras
+    attributes:
+      label: Regras de negócio
+      placeholder: |
+        - RN01:
+        - RN02:
+  - type: textarea
+    id: criterios
+    attributes:
+      label: Critérios de aceite
+      description: Use Dado / Quando / Então. Cada critério deve ser testável.
+      value: |
+        - [ ] **Dado**
+          **Quando**
+          **Então**
+    validations:
+      required: true
+  - type: textarea
+    id: fora-escopo
+    attributes:
+      label: Fora de escopo
+  - type: textarea
+    id: tecnico
+    attributes:
+      label: Notas técnicas (opcional)
+      description: Repositórios afetados, endpoints, telas, dependências.
+  - type: textarea
+    id: anexos
+    attributes:
+      label: Anexos / referências
+      description: Prints, mensagens do cliente, links de protótipo.

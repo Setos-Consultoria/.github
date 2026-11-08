@@ -1,0 +1,46 @@
+name: "🟣 Épico"
+description: Grande objetivo de negócio que agrupa várias Histórias.
+title: "[Épico] "
+type: "Épico"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Um Épico descreve **um objetivo de negócio grande**. Depois de criado, adicione as Histórias como *sub-issues*.
+  - type: textarea
+    id: objetivo
+    attributes:
+      label: Objetivo de negócio
+      description: Que problema do cliente/negócio este épico resolve?
+      placeholder: "Ex.: permitir que o cliente controle a locação de equipamentos sem planilhas."
+    validations:
+      required: true
+  - type: textarea
+    id: contexto
+    attributes:
+      label: Contexto
+      description: Histórico, quem pediu, por que agora, restrições conhecidas.
+  - type: textarea
+    id: escopo
+    attributes:
+      label: Escopo
+      description: O que entra neste épico (lista de alto nível).
+      placeholder: |
+        - Cadastro de equipamentos
+        - Reserva por período
+    validations:
+      required: true
+  - type: textarea
+    id: fora-escopo
+    attributes:
+      label: Fora de escopo
+      description: O que NÃO será feito aqui.
+  - type: textarea
+    id: sucesso
+    attributes:
+      label: Critério de sucesso
+      description: Como saberemos que o épico está concluído?
+  - type: input
+    id: prazo
+    attributes:
+      label: Prazo combinado com o cliente (se houver)

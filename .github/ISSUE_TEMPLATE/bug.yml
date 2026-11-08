@@ -1,0 +1,40 @@
+name: "🔴 Bug"
+description: Problema ou comportamento inesperado.
+title: "[Bug] "
+type: "Bug"
+body:
+  - type: textarea
+    id: descricao
+    attributes:
+      label: O que aconteceu
+    validations:
+      required: true
+  - type: textarea
+    id: passos
+    attributes:
+      label: Passos para reproduzir
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: esperado
+    attributes:
+      label: Comportamento esperado
+    validations:
+      required: true
+  - type: dropdown
+    id: ambiente
+    attributes:
+      label: Ambiente
+      options:
+        - Produção
+        - Homologação
+        - Local
+  - type: textarea
+    id: evidencias
+    attributes:
+      label: Evidências
+      description: Prints, logs, mensagem do cliente.

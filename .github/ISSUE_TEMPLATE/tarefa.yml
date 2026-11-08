@@ -1,0 +1,25 @@
+name: "🟡 Tarefa"
+description: Trabalho técnico específico, normalmente filho de uma História.
+title: "[Tarefa] "
+type: "Tarefa"
+body:
+  - type: textarea
+    id: oque
+    attributes:
+      label: O que precisa ser feito
+    validations:
+      required: true
+  - type: textarea
+    id: como
+    attributes:
+      label: Como fazer (sugestão técnica)
+      description: Arquivos, componentes, endpoints, abordagem.
+  - type: textarea
+    id: pronto
+    attributes:
+      label: Definição de pronto
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true
