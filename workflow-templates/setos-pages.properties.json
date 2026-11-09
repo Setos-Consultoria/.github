@@ -1,0 +1,7 @@
+{
+  "name": "Setos · Publicar no GitHub Pages",
+  "description": "Site estático (Astro, Vite, HTML) publicado no GitHub Pages. Só para repositórios públicos.",
+  "iconName": "setos",
+  "categories": ["Pages", "JavaScript"],
+  "filePatterns": ["astro.config.*", "vite.config.*", "index.html"]
+}

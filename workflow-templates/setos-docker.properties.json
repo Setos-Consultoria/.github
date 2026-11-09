@@ -1,0 +1,7 @@
+{
+  "name": "Setos · Imagem Docker (ghcr.io)",
+  "description": "Build da imagem Docker e publicação no GitHub Container Registry, pronta para o deploy no servidor.",
+  "iconName": "setos",
+  "categories": ["Deployment", "Dockerfile"],
+  "filePatterns": ["Dockerfile$"]
+}

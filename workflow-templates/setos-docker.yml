@@ -1,0 +1,17 @@
+# Gera a imagem Docker e publica no ghcr.io. Para apps que NÃO vão para o GitHub Pages.
+name: Imagem Docker
+
+on:
+  push:
+    branches: [$default-branch]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  image:
+    uses: Setos-Consultoria/.github/.github/workflows/docker-image.yml@main
+    # with:
+    #   dockerfile: Dockerfile

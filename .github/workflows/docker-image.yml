@@ -1,0 +1,62 @@
+# Workflow REUTILIZÁVEL: gera a imagem Docker do projeto e publica no GitHub Container Registry (ghcr.io).
+# Para apps que NÃO vão para o GitHub Pages (APIs, apps com login, dashboards privados).
+# O deploy no servidor (VPS) ainda depende da decisão de hospedagem; este passo deixa a imagem pronta para ele.
+#
+# Uso no repositório (arquivo .github/workflows/docker.yml):
+#
+#   name: Imagem Docker
+#   on:
+#     push: { branches: [main] }
+#     workflow_dispatch:
+#   permissions: { contents: read, packages: write }
+#   jobs:
+#     image:
+#       uses: Setos-Consultoria/.github/.github/workflows/docker-image.yml@main
+#       # with:
+#       #   dockerfile: Dockerfile
+#
+# Resultado: ghcr.io/setos-consultoria/<repo>:latest e :<sha curto>
+name: Imagem Docker (reutilizável)
+
+on:
+  workflow_call:
+    inputs:
+      dockerfile:
+        type: string
+        default: Dockerfile
+      context:
+        type: string
+        default: .
+      image-name:
+        description: Nome da imagem (padrão = nome do repositório)
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Nome da imagem
+        id: name
+        shell: bash
+        run: |
+          n="${{ inputs.image-name }}"; [ -z "$n" ] && n="${GITHUB_REPOSITORY#*/}"
+          echo "image=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${n,,}" >> "$GITHUB_OUTPUT"
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: ${{ inputs.context }}
+          file: ${{ inputs.dockerfile }}
+          push: true
+          tags: |
+            ${{ steps.name.outputs.image }}:latest
+            ${{ steps.name.outputs.image }}:${{ github.sha }}

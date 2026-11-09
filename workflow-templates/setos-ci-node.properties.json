@@ -1,0 +1,7 @@
+{
+  "name": "Setos · CI Node (pnpm)",
+  "description": "Lint, typecheck, testes e build com pnpm. Opcional: Postgres 16 para os testes.",
+  "iconName": "setos",
+  "categories": ["Continuous integration", "JavaScript", "TypeScript"],
+  "filePatterns": ["package.json$", "pnpm-lock.yaml$"]
+}

@@ -1,0 +1,72 @@
+# Workflow REUTILIZÁVEL: CI de projeto Node/TypeScript com pnpm (lint, typecheck, test, build).
+# Serve para repositórios públicos e privados da organização.
+#
+# Uso no repositório (arquivo .github/workflows/ci.yml):
+#
+#   name: CI
+#   on:
+#     pull_request:
+#     push: { branches: [main] }
+#   jobs:
+#     ci:
+#       uses: Setos-Consultoria/.github/.github/workflows/ci-node.yml@main
+#       # with:
+#       #   scripts: lint typecheck test build
+#       #   postgres: true      # sobe um Postgres 16 para os testes (DATABASE_URL já exportada)
+name: CI Node (reutilizável)
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        type: string
+        default: '22'
+      scripts:
+        description: Scripts do package.json a rodar, em ordem, separados por espaço (os que não existirem são pulados)
+        type: string
+        default: lint typecheck test build
+      working-directory:
+        type: string
+        default: .
+      postgres:
+        description: Sobe um Postgres 16 e exporta DATABASE_URL
+        type: boolean
+        default: false
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    services:
+      postgres:
+        image: ${{ inputs.postgres && 'postgres:16-alpine' || '' }}
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci
+          POSTGRES_DB: ci
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U ci" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: ${{ inputs.postgres && 'postgresql://ci:ci@localhost:5432/ci?schema=public' || '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: pnpm
+          cache-dependency-path: ${{ inputs.working-directory }}/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - name: Scripts
+        shell: bash
+        run: |
+          for s in ${{ inputs.scripts }}; do
+            if node -e "process.exit(require('./package.json').scripts?.['$s'] ? 0 : 1)"; then
+              echo "::group::pnpm $s"; pnpm run "$s"; echo "::endgroup::"
+            else
+              echo "Script '$s' não existe no package.json, pulando."
+            fi
+          done

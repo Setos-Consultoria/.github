@@ -1,0 +1,20 @@
+# Publica este repositório no GitHub Pages (site estático). Só para repositórios PÚBLICOS.
+# Antes do primeiro deploy: Settings > Pages > Source: GitHub Actions.
+name: Publicar no GitHub Pages
+
+on:
+  push:
+    branches: [$default-branch]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  pages:
+    uses: Setos-Consultoria/.github/.github/workflows/pages.yml@main
+    # with:
+    #   build-command: pnpm build
+    #   output-dir: dist

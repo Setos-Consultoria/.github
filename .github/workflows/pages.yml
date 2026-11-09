@@ -1,0 +1,77 @@
+# Workflow REUTILIZÁVEL: publica um site estático no GitHub Pages.
+# Use em repositórios PÚBLICOS (o Pages gratuito exige repositório público).
+#
+# Uso no repositório (arquivo .github/workflows/deploy.yml):
+#
+#   name: Publicar no GitHub Pages
+#   on:
+#     push: { branches: [main] }
+#     workflow_dispatch:
+#   permissions: { contents: read, pages: write, id-token: write }
+#   jobs:
+#     pages:
+#       uses: Setos-Consultoria/.github/.github/workflows/pages.yml@main
+#       # with:
+#       #   build-command: pnpm build
+#       #   output-dir: dist
+#
+# Na primeira vez, ative o Pages com origem "GitHub Actions":
+#   gh api -X POST repos/Setos-Consultoria/<repo>/pages -f build_type=workflow
+name: Pages (reutilizável)
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        type: string
+        default: '22'
+      build-command:
+        description: Comando que gera o site
+        type: string
+        default: pnpm build
+      output-dir:
+        description: Pasta gerada pelo build
+        type: string
+        default: dist
+      working-directory:
+        type: string
+        default: .
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: pnpm
+          cache-dependency-path: ${{ inputs.working-directory }}/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: ${{ inputs.build-command }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ inputs.working-directory }}/${{ inputs.output-dir }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
