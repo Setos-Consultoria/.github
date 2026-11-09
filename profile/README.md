@@ -5,6 +5,7 @@
 | Repositório | O que é | Publicação |
 |---|---|---|
 | [setos-analises](https://github.com/Setos-Consultoria/setos-analises) | Análises para clientes e decisões internas | 🌐 **GitHub Pages** · https://setos-consultoria.github.io/setos-analises/ |
+| setos-brand | Identidade visual da Setos (propostas em escolha) | 🔒 Não vai para o Pages |
 | setos-dashboard | Dashboard da Setos (privado, escopo a planejar) | 🔒 Não vai para o Pages · deploy próprio (a definir) |
 | product-snack-front / api / infra | Snack: sistema para pequenos restaurantes | 🔒 Não vai para o Pages · deploy próprio (hospedagem a definir) |
 
